@@ -4,6 +4,19 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>LensBros — Photo & Video Agency</title>
+  <meta name="description" content="LensBros — Photo & Video agency: Commercials, Events, Portraits, Cinematic Films. Two brothers creating bold visuals with story-driven impact." />
+  <meta name="theme-color" content="#020203" />
+
+  <!-- Performance: preconnect + dns-prefetch -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+  <link rel="dns-prefetch" href="https://images.unsplash.com">
+  <link rel="dns-prefetch" href="https://images.pexels.com">
+  <link rel="dns-prefetch" href="https://cdn.pixabay.com">
+  <link rel="dns-prefetch" href="https://www.pexels.com">
 
   <!-- Fonts + libs -->
    <!-- Tailwind CDN -->
@@ -39,6 +52,12 @@
     background: var(--offwhite);
     color: #111;
   }
+  /* Improve initial rendering on mobile */
+  html { scroll-behavior: smooth; }
+  /* Prevent horizontal scroll on mobile due to transforms/absolute elements */
+  html, body { overflow-x: hidden; }
+  /* Ensure media never exceeds viewport width */
+  img, video { max-width: 100%; }
 
   /* ---------------- NAV (glass) ---------------- */
   .nav {
@@ -78,11 +97,14 @@
   section.block.light { background: var(--offwhite); color: #111; }
   section.block.dark  { background: var(--black); color: #fff; }
 
+  /* Rendering/perf hint: only paint when visible */
+  section.block, header#hero, .about-portrait, .video-grid, .event-grid { content-visibility:auto; contain-intrinsic-size: 1px 1000px; }
+
   /* universal big headings */
   .big-title {
     font-weight:900; font-family: "Montserrat", sans-serif; letter-spacing:2px;
     font-size: clamp(30px, 8vw, 84px); line-height:0.9; text-transform:uppercase;
-    margin:0 0 18px 0;
+    margin:0 0 18px 0; color: var(--accent);
   }
 
   /* ---------------- ABOUT (highlight reading) ---------------- */
@@ -162,8 +184,21 @@
     .about-portrait img { aspect-ratio: 2/3 }
   }
 
+  /* Extra mobile responsiveness */
+  @media (max-width:700px){
+    .contact-row { flex-direction:column; align-items:flex-start; gap:12px }
+    /* Stack work collage and avoid overflow */
+    .work-collage { grid-template-columns: 1fr; }
+    .work-watermark { font-size: 18vw; left: 0; right: 0; text-align: center; top: -10px; }
+  }
+  @media (max-width:640px){
+    /* Inline-style grids fallback overrides */
+    .event-grid { grid-template-columns: 1fr !important; }
+  }
+
   /* reveal helper (initial state) */
   .reveal { opacity:0; transform: translateY(28px); }
+  .reveal.reveal-visible { opacity:1; transform:none; transition: opacity 600ms ease, transform 600ms ease; }
 
   /* small visual touches */
   .muted { color: var(--muted) }
@@ -175,13 +210,14 @@
   <!-- NAV -->
 <!-- Floating Navbar -->
 <!-- Floating Navbar -->
-<nav class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 w-[95%] max-w-6xl bg-black/90 backdrop-blur-md rounded-2xl shadow-lg px-6 py-4">
+<nav class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 w-[95%] max-w-6xl bg-black/90 backdrop-blur-md rounded-2xl shadow-lg px-6 py-4 hidden md:block">
   <div class="flex items-center justify-between">
     
     <!-- Logo -->
-    <div class="w-12 h-12 flex items-center justify-center rounded-full bg-orange-500 text-white font-bold shadow-md">
-      L.B
+    <div class="w-14 h-14 flex items-center justify-center rounded-full bg-orange-500 text-white font-bold shadow-md">
+      <img src="assests/m.png" alt="Logo" class="w-14 h-14 object-contain" />
     </div>
+    
 
     <!-- Desktop Menu -->
     <ul class="hidden md:flex gap-7 text-white font-semibold">
@@ -192,7 +228,7 @@
     </ul>
 
     <!-- Desktop Call Button -->
-    <a href="tel:+911234567890" class="hidden md:flex w-10 h-10 items-center justify-center rounded-full bg-[#000000] text-white text-lg hover:scale-110 transition-transform">
+        <a href="tel:+911234567890" class="hidden md:flex w-10 h-10 items-center justify-center rounded-full text-white text-lg hover:scale-110 transition-transform" style="background:var(--accent);color:var(--black)">
       📞
     </a>
 
@@ -209,6 +245,47 @@
     <li><a href="tel:+911234567890" class="bg-orange-500 w-10 h-10 flex items-center justify-center rounded-full text-white hover:scale-110 transition-transform">📞</a></li>
   </ul>
 </nav>
+<!-- Bottom Mobile Navbar -->
+<nav class="fixed bottom-3 left-1/2 transform -translate-x-1/2 z-50 w-[94%] max-w-md bg-black/80 backdrop-blur-md rounded-3xl shadow-lg flex justify-around items-center py-2.5 px-5 md:hidden" style="padding-bottom: env(safe-area-inset-bottom, 12px);">
+  <a href="#hero" class="group flex flex-col items-center justify-center text-white/90 hover:text-white transition-colors">
+    <div class="flex flex-col items-center justify-center">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-10 0h10" />
+      </svg>
+      <span class="text-xs mt-1">Home</span>
+      <span class="mt-1 h-1 w-5 rounded-full opacity-0 transition-opacity group-hover:opacity-100" style="background:var(--accent)"></span>
+    </div>
+  </a>
+  <a href="#about" class="group flex flex-col items-center justify-center text-white/90 hover:text-white transition-colors">
+    <div class="flex flex-col items-center justify-center">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z" />
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422A12.083 12.083 0 0112 21.6a12.083 12.083 0 01-6.16-10.022L12 14z" />
+      </svg>
+      <span class="text-xs mt-1">About</span>
+      <span class="mt-1 h-1 w-5 rounded-full opacity-0 transition-opacity group-hover:opacity-100" style="background:var(--accent)"></span>
+    </div>
+  </a>
+  <a href="#work" class="group flex flex-col items-center justify-center text-white/90 hover:text-white transition-colors">
+    <div class="flex flex-col items-center justify-center">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-6h6v6h5V9H4v8h5z" />
+      </svg>
+      <span class="text-xs mt-1">Work</span>
+      <span class="mt-1 h-1 w-5 rounded-full opacity-0 transition-opacity group-hover:opacity-100" style="background:var(--accent)"></span>
+    </div>
+  </a>
+  <a href="#contact" class="group flex flex-col items-center justify-center text-white/90 hover:text-white transition-colors">
+    <div class="flex flex-col items-center justify-center">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+      </svg>
+      <span class="text-xs mt-1">Contact</span>
+      <span class="mt-1 h-1 w-5 rounded-full opacity-0 transition-opacity group-hover:opacity-100" style="background:var(--accent)"></span>
+    </div>
+  </a>
+</nav>
+
 
 <script>
 const btn = document.getElementById('mobile-menu-btn');
@@ -309,104 +386,262 @@ btn.addEventListener('click', () => {
   
   
 
-  <!-- HERO: full-screen video -->
-  <header id="hero" aria-label="LensBros hero">
-    <!-- background video -->
-    <video class="bg absolute inset-0 w-full h-full object-cover" playsinline autoplay muted loop preload="auto">
+  <header id="hero" class="relative w-full h-screen overflow-hidden bg-black flex items-center justify-center">
+    <!-- background image/video container with horizontal fit -->
+    <div class="absolute inset-0 bg-black">
+      <video class="absolute inset-0 w-full h-full object-cover" playsinline autoplay muted loop preload="metadata">
       <source src="https://cdn.pixabay.com/video/2024/03/08/203449-921267347_tiny.mp4" type="video/mp4" />
-      Your browser does not support the video tag.
     </video>
+      <div class="absolute inset-0 bg-black/50"></div>
+    </div>
+    
+    <!-- Top Left Badge - Best in Business -->
   
-    <div class="hero-inner container relative z-10 text-center text-white">
-      <div class="hero-small mb-2 text-lg">LensBros — Photo • Video Agency</div>
-      <h1 class="hero-title reveal text-6xl md:text-8xl font-extrabold tracking-tight">LensBros</h1>
-      <div class="hero-sub reveal mt-4 text-xl md:text-2xl max-w-2xl mx-auto">
-        Two brothers. One vision. Commercials • Events • Portraits • Cinematic Films.
+    
+    <!-- Top corners branding (left: logo, right: text) -->
+   <!-- Mobile logo (hidden on md and above) -->
+<div class="absolute top-8 left-8 z-30 md:hidden">
+  <div class="w-14 h-14 flex items-center justify-center rounded-full shadow-md" style="background:var(--accent);">
+    <img src="assests/m.png" alt="LensBros" class="w-10 h-10 object-contain -translate-y-[2px]" />
       </div>
     </div>
   
-    <div class="hero-blob absolute inset-0 bg-black/40" aria-hidden="true"></div>
-  </header>
+<!-- Desktop text (hidden on small screens) -->
+<div class="absolute top-8 right-8 z-30 hidden md:block" style="color:var(--offwhite);">
+  <div class="text-right">
+    <div class="text-xs tracking-[0.3em] uppercase opacity-80">VISUAL CREATIVITY</div>
+    <div class="text-sm font-bold tracking-wider">PRODUCTION</div>
+  </div>
+</div>
+
+  
+    <!-- Hero Content aligned with site styles -->
+   <!-- Hero Content -->
+ <div class="hero-inner container relative z-20 max-w-3xl bg-black/30 md:bg-transparent backdrop-blur-sm md:backdrop-blur-0 rounded-xl md:rounded-none p-4 md:p-0 text-center" style="color:var(--offwhite)">
+  <!-- Tagline -->
+  <div class="text-sm md:text-base tracking-[0.3em] uppercase mb-4 animate-fade-in-slow" style="color:var(--offwhite);opacity:0.8">
+    LensBros — Photo • Video Agency
+  </div>
+
+  <!-- Main Heading -->
+  <h1 class="font-extrabold tracking-tight text-5xl sm:text-6xl md:text-7xl leading-tight drop-shadow-md animate-fade-up" style="color:var(--offwhite);font-family:'Montserrat', sans-serif;">
+    We make<br />
+    <span style="color:var(--accent);font-weight:700;">Cinematic Stories & Ads</span>
+  </h1>
   
 
+  <!-- Supporting Description -->
+  <p class="mt-6 text-base sm:text-lg md:text-xl leading-relaxed animate-fade-in-slow delay-300" style="color:var(--offwhite);opacity:0.9">
+    Two brothers. One vision. <br class="hidden sm:block" />
+    <span style="color:var(--offwhite)">Commercials</span> • <span style="color:var(--offwhite)">Events</span> • 
+    <span style="color:var(--offwhite)">Portraits</span> • <span style="color:var(--accent);font-weight:700;">Cinematic Films.</span>
+  </p>
+
+  <!-- CTA Buttons -->
+  <div class="flex flex-col sm:flex-row justify-center items-center gap-4 mt-8 animate-fade-in-slow delay-500">
+    <a href="#work" class="font-semibold px-6 py-3 rounded-full hover:scale-105 transition-transform shadow-lg" style="background:var(--accent);color:var(--black)">
+      See Our Work
+    </a>
+    <a href="mailto:hello@lensbros.example" class="font-semibold px-6 py-3 rounded-full transition-all" style="border:2px solid rgba(246,239,230,0.4);color:var(--offwhite)">
+      Get in Touch
+    </a>
+  </div>
+  
+</div>
+
+<!-- Animations -->
+<style>
+  @keyframes fade-in-slow {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade-in-slow {
+    opacity: 0;
+    animation: fade-in-slow 1.2s ease-out forwards;
+  }
+  .delay-300 { animation-delay: 0.3s; }
+  .delay-500 { animation-delay: 0.5s; }
+
+  @keyframes fade-up {
+    0% { opacity: 0; transform: translateY(30px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade-up {
+    animation: fade-up 1.2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  }
+
+  .italic-script {
+    font-family: "Playfair Display", serif;
+    font-style: italic;
+    font-weight: 600;
+  }
+</style>
+
+    
+    
+    <!-- Infinite Scroll Text at Bottom -->
+    <div class="absolute bottom-0 left-0 right-0 z-30 overflow-hidden bg-black/70 backdrop-blur-sm border-t border-white/20 hidden md:block">
+      <div class="flex whitespace-nowrap scroll-container py-6">
+        <div class="flex gap-16 px-8 items-center">
+          <span class="text-white text-xl md:text-2xl uppercase tracking-[0.15em] font-bold">CREATIVE DIRECTION</span>
+          <span class="text-white/50 text-2xl">—</span>
+          <span class="text-white text-xl md:text-2xl uppercase tracking-[0.15em] font-bold">FILM PRODUCTION</span>
+          <span class="text-white/50 text-2xl">—</span>
+          <span class="text-white text-xl md:text-2xl uppercase tracking-[0.15em] font-bold">DIGITAL CONTENT</span>
+          <span class="text-white/50 text-2xl">—</span>
+        </div>
+        <div class="flex gap-16 px-8 items-center">
+          <span class="text-white text-xl md:text-2xl uppercase tracking-[0.15em] font-bold">CREATIVE DIRECTION</span>
+          <span class="text-white/50 text-2xl">—</span>
+          <span class="text-white text-xl md:text-2xl uppercase tracking-[0.15em] font-bold">FILM PRODUCTION</span>
+          <span class="text-white/50 text-2xl">—</span>
+          <span class="text-white text-xl md:text-2xl uppercase tracking-[0.15em] font-bold">DIGITAL CONTENT</span>
+          <span class="text-white/50 text-2xl">—</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Bottom Right Badge -->
+    <div class="absolute bottom-28 right-10 z-30 hidden md:block">
+      <div class="rotating-badge-reverse relative">
+        <div class="absolute inset-0 w-28 h-28 rounded-full" style="background:var(--accent)"></div>
+        <svg class="w-28 h-28 relative" viewBox="0 0 120 120">
+          <defs>
+            <path id="circlePath2" d="M 60, 60 m -45, 0 a 45,45 0 1,1 90,0 a 45,45 0 1,1 -90,0" />
+          </defs>
+          <text class="text-[8px] font-bold fill-white uppercase tracking-wider">
+            <textPath href="#circlePath2">
+              ★ VIDEOGRAPHY ★ PHOTOGRAPHY ★ COLORGRADING
+            </textPath>
+          </text>
+        </svg>
+      </div>
+    </div>
+  </header>
+  
+  <style>
+
+    
+    
+    
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .rotating-badge {
+      animation: rotate 20s linear infinite;
+    }
+    
+    .rotating-badge-reverse {
+      animation: rotate 25s linear infinite reverse;
+    }
+    
+    .rotating-badge, .rotating-badge-reverse {
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4));
+    }
+    
+    @keyframes scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    
+    .scroll-container {
+      animation: scroll 30s linear infinite;
+    }
+  </style>
+
   <!-- ABOUT (off-white) -->
-  <section id="about" class="block light" data-theme="light">
-    <div class="container about-wrap">
-      <div class="about-portrait reveal">
-        <img src="https://plus.unsplash.com/premium_photo-1723741320347-bf8a65518f8e?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="LensBros portrait">
-        <div class="vertical-brand">DUO — FOUNDERS</div>
+  <section id="about" class="block light bg-white" data-theme="light">
+    <div class="container mx-auto px-4 py-12 flex flex-col md:flex-row items-center md:items-start gap-8">
+      
+      <!-- Portrait -->
+      <div class="about-portrait flex-shrink-0 w-full md:w-1/3 reveal relative">
+        <img loading="lazy" decoding="async" 
+             src="https://plus.unsplash.com/premium_photo-1723741320347-bf8a65518f8e?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+             alt="LensBros portrait"
+             class="rounded-lg w-full h-auto object-cover shadow-lg">
+        <div class="vertical-brand absolute bottom-2 left-2 text-sm md:text-base font-bold tracking-wider text-gray-700">
+          DUO — FOUNDERS
+        </div>
       </div>
 
-      <div class="reveal">
-        <h2 class="big-title">About LensBros</h2>
+      <!-- Text Content -->
+      <div class="flex-1 reveal">
+        <h2 class="big-title text-3xl md:text-4xl font-bold mb-6">About LensBros</h2>
 
         <!-- highlighter reading effect -->
-        <p class="about-text">
-          <span class="highlight-wrap">
-            <span class="marker" aria-hidden="true"></span>
-            <span class="read-text">
+        <p class="about-text text-gray-800 text-base md:text-lg mb-8 leading-relaxed">
+          <span class="highlight-wrap relative">
+            <span class="marker absolute inset-0 bg-yellow-200 opacity-30 rounded"></span>
+            <span class="read-text relative">
               We are two brothers — founders of LensBros. We craft cinematic photography and editorial videography for brands, creators and events. Our work balances bold composition, strong color, and narrative emotion.
             </span>
           </span>
         </p>
 
-        <div class="about-cards">
-          <div class="card">
-            <strong>Who</strong><br>
+        <!-- Cards -->
+        <div class="about-cards grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          <div class="card p-4 bg-gray-50 rounded-lg shadow hover:shadow-lg transition">
+            <strong class="block text-lg mb-1">Who</strong>
             Two brothers — one creative & one technical. (Photographer + Lead Editor)
           </div>
-          <div class="card">
-            <strong>What</strong><br>
+          <div class="card p-4 bg-gray-50 rounded-lg shadow hover:shadow-lg transition">
+            <strong class="block text-lg mb-1">What</strong>
             Commercials, event coverage, portraits, color grading, social edits.
           </div>
-          <div class="card">
-            <strong>Where</strong><br>
+          <div class="card p-4 bg-gray-50 rounded-lg shadow hover:shadow-lg transition">
+            <strong class="block text-lg mb-1">Where</strong>
             Studio & location work / Domestic + International.
           </div>
         </div>
       </div>
     </div>
   </section>
+  
 
   <!-- PHOTOGRAPHY (dark) — pinned showcase -->
-  <section id="work" class="relative bg-black text-white py-32 overflow-hidden">
-    <div class="container mx-auto flex flex-col md:flex-row items-center gap-12">
+  <section id="work" class="relative bg-black text-white py-24 md:py-32 overflow-hidden">
+    <div class="container mx-auto px-4 flex flex-col md:flex-row items-start md:items-center gap-12">
       
       <!-- Left Big Text -->
-      <div class="flex-1 relative">
-        <h2 class="text-[9rem] font-extrabold leading-none opacity-10 absolute -top-20 left-0 right-10 select-none">
+      <div class="flex-1 relative w-full md:w-1/3 h-48 md:h-[500px]">
+        <h2 class="text-[6rem] sm:text-[7rem] md:text-[9rem] font-extrabold leading-none opacity-10 absolute -top-16 md:-top-20 left-0 right-0 select-none work-watermark">
           WORK
         </h2>
       </div>
   
       <!-- Middle Collage -->
-      <div class="flex-1 relative grid grid-cols-2 gap-6">
+      <div class="flex-1 relative w-full md:w-1/3 grid grid-cols-2 gap-4 md:gap-6 work-collage">
         <div class="rounded-2xl overflow-hidden transform rotate-[-4deg] hover:rotate-0 transition shadow-lg">
-          <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=600" 
+          <img loading="lazy" decoding="async" 
+               src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=600" 
                alt="Portrait" class="w-full h-full object-cover">
         </div>
         <div class="rounded-2xl overflow-hidden transform rotate-[6deg] hover:rotate-0 transition shadow-lg">
-          <img src="https://images.unsplash.com/photo-1488161628813-04466f872be2?q=80&w=600" 
+          <img loading="lazy" decoding="async" 
+               src="https://images.unsplash.com/photo-1488161628813-04466f872be2?q=80&w=600" 
                alt="Lifestyle" class="w-full h-full object-cover">
         </div>
-        <div class="rounded-2xl overflow-hidden transform rotate-[3deg] hover:rotate-0 transition shadow-lg col-span-2">
-          <img src="https://images.unsplash.com/photo-1608126199278-50a5f584dbdd?q=80&w=1200" 
-               alt="Street" class="w-full h-[400px] object-cover">
+        <div class="rounded-2xl overflow-hidden transform rotate-[3deg] hover:rotate-0 transition shadow-lg col-span-2 h-48 sm:h-64 md:h-[400px]">
+          <img loading="lazy" decoding="async" 
+               src="https://images.unsplash.com/photo-1608126199278-50a5f584dbdd?q=80&w=1200" 
+               alt="Street" class="w-full h-full object-cover">
         </div>
       </div>
   
       <!-- Right Goofy Text -->
-      <div class="flex-1 space-y-6 max-w-md">
-        <p class="text-lg leading-relaxed">
+      <div class="flex-1 w-full md:w-1/3 space-y-6 max-w-full md:max-w-md">
+        <p class="text-base sm:text-lg md:text-lg leading-relaxed">
           We don’t just take photos.  
           We make pixels dance, moods freeze,  
           and memories scream <span class="bg-white text-black px-1">“remember me!”</span>.
         </p>
-        <p class="text-lg leading-relaxed">
+        <p class="text-base sm:text-lg md:text-lg leading-relaxed">
           LensBros is two brothers with one mission:  
           <span class="italic">make your brand look cooler than your ex’s new feed.</span>
         </p>
-        <p class="text-lg leading-relaxed">
+        <p class="text-base sm:text-lg md:text-lg leading-relaxed">
           Commercials. Portraits. Events.  
           Or just vibes. We got you.
         </p>
@@ -416,6 +651,7 @@ btn.addEventListener('click', () => {
   </section>
   
   
+  
 
   <!-- PORTRAITS (off-white, sticky storytelling) -->
   <section id="portrait" class="bg-neutral-50 py-12 md:py-20">
@@ -423,7 +659,7 @@ btn.addEventListener('click', () => {
   
       <!-- Row 1 -->
       <div class="md:col-span-2 flex flex-col justify-center">
-        <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-red-600 leading-tight mb-4 md:mb-6">
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight mb-4 md:mb-6" style="color:var(--accent)">
           Portrait<br>Photography
         </h2>
         <p class="text-gray-700 leading-relaxed text-base md:text-lg">
@@ -431,12 +667,12 @@ btn.addEventListener('click', () => {
         </p>
       </div>
       <div class="md:col-span-3 rounded-xl overflow-hidden shadow-lg h-64 sm:h-80 md:h-96">
-        <img src="https://images.pexels.com/photos/20788951/pexels-photo-20788951.jpeg" alt="Portrait main" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+        <img loading="lazy" decoding="async" src="https://images.pexels.com/photos/20788951/pexels-photo-20788951.jpeg" alt="Portrait main" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
       </div>
   
       <!-- Row 2 -->
       <div class="md:col-span-2 rounded-xl overflow-hidden shadow-md h-48 sm:h-64">
-        <img src="https://images.pexels.com/photos/20788965/pexels-photo-20788965.jpeg" alt="Portrait 1" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+        <img loading="lazy" decoding="async" src="https://images.pexels.com/photos/20788965/pexels-photo-20788965.jpeg" alt="Portrait 1" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
       </div>
       <div class="md:col-span-3 flex flex-col justify-center">
         <p class="text-gray-600 italic leading-relaxed text-base md:text-lg">
@@ -451,15 +687,15 @@ btn.addEventListener('click', () => {
         </p>
       </div>
       <div class="md:col-span-2 rounded-xl overflow-hidden shadow-md h-48 sm:h-64 md:h-72">
-        <img src="https://images.pexels.com/photos/20788953/pexels-photo-20788953.jpeg" alt="Portrait 2" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+        <img loading="lazy" decoding="async" src="https://images.pexels.com/photos/20788953/pexels-photo-20788953.jpeg" alt="Portrait 2" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
       </div>
       <div class="md:col-span-1 rounded-xl overflow-hidden shadow-md h-48 sm:h-64 md:h-72">
-        <img src="https://images.pexels.com/photos/20788948/pexels-photo-20788948.jpeg" alt="Portrait 3" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+        <img loading="lazy" decoding="async" src="https://images.pexels.com/photos/20788948/pexels-photo-20788948.jpeg" alt="Portrait 3" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
       </div>
   
       <!-- Row 4 -->
       <div class="md:col-span-3 rounded-xl overflow-hidden shadow-md h-64 sm:h-80 md:h-96">
-        <img src="https://images.pexels.com/photos/20788954/pexels-photo-20788954.jpeg" alt="Portrait 4" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+        <img loading="lazy" decoding="async" src="https://images.pexels.com/photos/20788954/pexels-photo-20788954.jpeg" alt="Portrait 4" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
       </div>
       <div class="md:col-span-2 flex flex-col justify-center">
         <p class="text-gray-600 leading-relaxed text-base md:text-lg">
@@ -474,88 +710,80 @@ btn.addEventListener('click', () => {
   
 
   <!-- VIDEOGRAPHY (dark) -->
-  <section id="video" class="bg-black text-white py-20">
-    <div class="container mx-auto px-6">
+  <section id="video" class="bg-black text-white py-16 md:py-20">
+    <div class="container mx-auto px-4">
   
       <!-- Hero Section -->
-      <div class="relative mb-16">
-        <img src="https://images.unsplash.com/photo-1580870858053-8d0764624f4f?q=80&w=1268&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+      <div class="relative mb-12 md:mb-16">
+        <img loading="lazy" decoding="async" 
+             src="https://images.unsplash.com/photo-1580870858053-8d0764624f4f?q=80&w=1268&auto=format&fit=crop&ixlib=rb-4.1.0" 
              alt="Videography Hero"
-             class="w-full h-[500px] object-cover rounded-xl">
-        <div class="absolute inset-0 bg-black/60 flex flex-col justify-center items-center text-center">
-          <h2 class="text-6xl md:text-7xl font-extrabold text-red-500 tracking-tight glow">
+             class="w-full h-64 sm:h-96 md:h-[500px] object-cover rounded-xl">
+        <div class="absolute inset-0 bg-black/60 flex flex-col justify-center items-center text-center px-4">
+          <h2 class="text-3xl sm:text-5xl md:text-7xl font-extrabold tracking-tight glow leading-tight" style="color:var(--accent)">
             VIDEOGRAPHY
           </h2>
-          <p class="mt-4 text-lg text-gray-200">
+          <p class="mt-4 text-sm sm:text-base md:text-lg text-gray-200 max-w-xl">
             Cinematic reels • Brand films • Color graded deliverables
           </p>
         </div>
       </div>
   
       <!-- Section Title -->
-      <h3 class="text-2xl font-bold text-red-500 mb-8">Video Edit / Color Grading</h3>
+      <h3 class="text-xl sm:text-2xl md:text-2xl font-bold mb-8 px-2 md:px-0" style="color:var(--accent)">
+        Video Edit / Color Grading
+      </h3>
   
       <!-- Featured Row -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-        <!-- Card 1 -->
-     <!-- Card 1 -->
-<!-- India Gate Section -->
-<section class="relative w-full h-[500px] rounded-2xl overflow-hidden shadow-lg mb-12">
-  <img src="https://images.unsplash.com/photo-1600258881099-e78a5e3b77ff?q=80&w=1364&auto=format&fit=crop" 
+      <div class="flex flex-col md:flex-row gap-8 mb-12">
+        <!-- India Gate -->
+        <div class="relative w-full md:w-1/2 h-64 sm:h-80 md:h-[500px] rounded-2xl overflow-hidden shadow-lg">
+          <img loading="lazy" decoding="async" 
+               src="https://images.unsplash.com/photo-1600258881099-e78a5e3b77ff?q=80&w=1364&auto=format&fit=crop" 
        alt="India Gate" 
        class="absolute inset-0 w-full h-full object-cover">
   <div class="absolute inset-0 bg-black/40"></div>
-  
-  <div class="relative z-10 flex flex-col justify-end h-full p-8">
-    <h3 class="text-4xl md:text-5xl font-extrabold text-white">India Gate</h3>
-    <p class="text-sm text-red-400 uppercase tracking-wider mt-2">New Delhi</p>
-    <p class="mt-4 text-lg text-gray-200 max-w-2xl leading-relaxed">
-      A timeless landmark standing tall in the heart of Delhi — 
-      not just as architecture, but as a symbol of memory and emotion. 
-      Each frame honors its presence while telling a modern cinematic story.
+          <div class="relative z-10 flex flex-col justify-end h-full p-6 sm:p-8">
+            <h3 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white">India Gate</h3>
+            <p class="text-xs sm:text-sm text-red-400 uppercase tracking-wider mt-1">New Delhi</p>
+            <p class="mt-2 sm:mt-4 text-sm sm:text-base md:text-lg text-gray-200 leading-relaxed max-w-full sm:max-w-xl">
+              A timeless landmark standing tall in the heart of Delhi — not just as architecture, but as a symbol of memory and emotion. Each frame honors its presence while telling a modern cinematic story.
     </p>
   </div>
-</section>
-
-
-<!-- Hauz Khas Section -->
-<section class="relative w-full h-[500px] rounded-2xl overflow-hidden shadow-lg">
-  <img src="https://images.unsplash.com/photo-1745826092440-0d6542010bcc?q=80&w=1170&auto=format&fit=crop" 
+        </div>
+  
+        <!-- Hauz Khas -->
+        <div class="relative w-full md:w-1/2 h-64 sm:h-80 md:h-[500px] rounded-2xl overflow-hidden shadow-lg">
+          <img loading="lazy" decoding="async" 
+               src="https://images.unsplash.com/photo-1745826092440-0d6542010bcc?q=80&w=1170&auto=format&fit=crop" 
        alt="Hauz Khas" 
        class="absolute inset-0 w-full h-full object-cover">
   <div class="absolute inset-0 bg-black/40"></div>
-  
-  <div class="relative z-10 flex flex-col justify-end h-full p-8">
-    <h3 class="text-4xl md:text-5xl font-extrabold text-white">Hauz Khas</h3>
-    <p class="text-sm text-red-400 uppercase tracking-wider mt-2">South Delhi • 2024</p>
-    <p class="mt-4 text-lg text-gray-200 max-w-2xl leading-relaxed">
-      Between historic ruins and vibrant urban life, Hauz Khas blends the past 
-      with the present. My lens captures this raw energy — frames that feel 
-      bold, artistic, and alive.
+          <div class="relative z-10 flex flex-col justify-end h-full p-6 sm:p-8">
+            <h3 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white">Hauz Khas</h3>
+            <p class="text-xs sm:text-sm text-red-400 uppercase tracking-wider mt-1">South Delhi • 2024</p>
+            <p class="mt-2 sm:mt-4 text-sm sm:text-base md:text-lg text-gray-200 leading-relaxed max-w-full sm:max-w-xl">
+              Between historic ruins and vibrant urban life, Hauz Khas blends the past with the present. My lens captures this raw energy — frames that feel bold, artistic, and alive.
     </p>
   </div>
-</section>
-
-
+        </div>
       </div>
   
       <!-- Grid Zig-Zag -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <img src="https://images.unsplash.com/photo-1678542561901-5d75778930ef?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
-             class="w-full h-64 object-cover rounded-lg" alt="Work 1">
-             
-        <video autoplay muted loop playsinline class="w-full h-64 object-cover rounded-lg">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+        <img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1678542561901-5d75778930ef?q=80&w=1332&auto=format&fit=crop" 
+             class="w-full h-48 sm:h-64 md:h-64 object-cover rounded-lg" alt="Work 1">
+        <video autoplay muted loop playsinline class="w-full h-48 sm:h-64 md:h-64 object-cover rounded-lg">
           <source src="https://www.pexels.com/download/video/20726265/" type="video/mp4">
         </video>
-        <img src="https://images.unsplash.com/photo-1633255647473-1f434bd63c70?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3Dp" 
-             class="w-full h-64 object-cover rounded-lg" alt="Work 2">
-  
-        <video autoplay muted loop playsinline class="w-full h-64 object-cover rounded-lg">
+        <img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1633255647473-1f434bd63c70?q=80&w=1170&auto=format&fit=crop" 
+             class="w-full h-48 sm:h-64 md:h-64 object-cover rounded-lg" alt="Work 2">
+        <video autoplay muted loop playsinline class="w-full h-48 sm:h-64 md:h-64 object-cover rounded-lg">
           <source src="https://cdn.pixabay.com/video/2022/10/04/133491-756991118_large.mp4" type="video/mp4">
         </video>
-        <img src="https://images.unsplash.com/photo-1684235425049-614ede2f533e?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
-             class="w-full h-64 object-cover rounded-lg" alt="Work 3">
-        <video autoplay muted loop playsinline class="w-full h-64 object-cover rounded-lg">
+        <img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1684235425049-614ede2f533e?q=80&w=1170&auto=format&fit=crop" 
+             class="w-full h-48 sm:h-64 md:h-64 object-cover rounded-lg" alt="Work 3">
+        <video autoplay muted loop playsinline class="w-full h-48 sm:h-64 md:h-64 object-cover rounded-lg">
           <source src="https://cdn.pixabay.com/video/2024/03/12/203878-922675732_large.mp4" type="video/mp4">
         </video>
       </div>
@@ -563,92 +791,82 @@ btn.addEventListener('click', () => {
     </div>
   </section>
   
+  
 
   <!-- COMMERCIAL (off-white, split) -->
   <section id="commercial" class="block light" data-theme="light">
-    <div class="container split">
+    <div class="container mx-auto px-4 py-12 md:py-20 flex flex-col md:flex-row gap-8">
+  
       <!-- Left Copy -->
-      <div class="copy reveal">
-        <h3 class="big-title">Commercials</h3>
-        <p class="muted">
+      <div class="copy reveal md:w-1/3">
+        <h3 class="big-title text-3xl md:text-4xl font-extrabold mb-4">Commercials</h3>
+        <p class="muted text-gray-700 text-base md:text-lg leading-relaxed">
           We create cinematic campaigns tailored for Gen-Z — raw energy, bold colors,
           and authentic storytelling. Each frame is crafted with purpose, designed to
           connect instantly with your audience.
         </p>
-        <p style="margin-top:18px;">
+        <p class="mt-4 text-base md:text-lg">
           <strong>Recent:</strong> Music video drops, streetwear campaigns, beverage brand
           launches, festival after-movies.
         </p>
       </div>
   
       <!-- Right Media Grid -->
-      <div class="media reveal" 
-           style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3, 1fr);gap:14px;min-height:780px;position:relative;">
+      <div class="media reveal md:w-2/3 grid grid-cols-2 grid-rows-[repeat(3,_minmax(0,_1fr))] gap-4 md:gap-6 min-h-[780px]">
   
-        <!-- Large Left Reel (Reel-style 9:16) -->
-        <div style="grid-row:1/3;background:#111;border-radius:12px;overflow:hidden;position:relative;display:flex;justify-content:center;align-items:center;max-height:600px;">
-          <video autoplay muted loop playsinline 
-                 style="height:100%;width:auto;max-width:100%;object-fit:cover;aspect-ratio:9/16;">
-            <source src="Video-744.mp4" type="video/mp4">
+        <!-- Large Left Reel (row-span-2) -->
+        <div class="row-span-2 bg-[#111] rounded-xl overflow-hidden relative flex justify-center items-center max-h-[600px]">
+          <video autoplay muted loop playsinline class="h-full w-auto max-w-full object-cover aspect-[9/16]">
+            <source src="assests/Video-744.mp4" type="video/mp4">
           </video>
-          <div style="position:absolute;top:16px;left:16px;background:rgba(0,0,0,0.7);backdrop-filter:blur(10px);padding:10px 16px;border-radius:20px;font-size:11px;font-weight:600;color:#fff;letter-spacing:0.5px;">
+          <div class="absolute top-4 left-4 bg-black/70 backdrop-blur-sm px-3 py-1.5 rounded-full text-xs font-semibold text-white tracking-wide">
             Street Dreams
           </div>
-          <div style="position:absolute;bottom:16px;left:16px;right:16px;color:#fff;">
-            <p style="font-size:13px;font-weight:500;line-height:1.5;text-shadow:0 2px 8px rgba(0,0,0,0.6);">
+          <div class="absolute bottom-4 left-4 right-4 text-white">
+            <p class="text-[13px] font-medium leading-relaxed text-shadow-md">
               A bold visual narrative for a sneaker brand launch — neon lights, 
               urban energy, and the pulse of the city captured through motion and music.
             </p>
           </div>
         </div>
-        
   
         <!-- Top Right -->
-     <!-- Club Mix -->
-<div style="background:#000;border-radius:12px;overflow:hidden;position:relative;">
-  <video autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;">
-    <source src="Video-176.mp4" type="video/mp4">
+        <div class="bg-black rounded-xl overflow-hidden relative">
+          <video autoplay muted loop playsinline class="w-full h-full object-cover">
+    <source src="assests/Video-176.mp4" type="video/mp4">
   </video>
-  <div style="position:absolute;top:10px;right:10px;background:#fff;color:#000;
-              padding:6px 12px;border-radius:12px;font-size:10px;font-weight:700;letter-spacing:0.3px;">
+          <div class="absolute top-2 right-2 bg-white text-black px-2 py-1 rounded-full text-[10px] font-bold tracking-tight">
     Club Mix
   </div>
 </div>
 
-<!-- Wide Reel (still in right column only) -->
-<div style="background:#000;border-radius:12px;overflow:hidden;position:relative;display:flex;flex-direction:column;align-items:center;">
-  <video autoplay muted loop playsinline 
-         style="width:100%;height:auto;object-fit:cover;aspect-ratio:16/9;">
-    <source src="Video-951.mp4" type="video/mp4">
+        <div class="bg-black rounded-xl overflow-hidden flex flex-col items-center relative">
+          <video autoplay muted loop playsinline class="w-full h-auto object-cover aspect-video">
+    <source src="assests/Video-951.mp4" type="video/mp4">
   </video>
-  <div style="padding:10px 14px;text-align:center;color:#fff;
-              font-size:12px;font-weight:500;line-height:1.4;
-              background:#111;width:100%;">
+          <div class="px-3 py-2 text-center text-white text-[12px] font-medium leading-snug bg-[#111] w-full">
     Ultra-wide cinematic reel format — designed for immersive storytelling 
     across festival screens and next-gen platforms.
   </div>
 </div>
 
-<!-- Festival Recap -->
-<div style="background:#111;border-radius:12px;overflow:hidden;position:relative;">
-  <video autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;">
-    <source src="Video-950.mp4" type="video/mp4">
+        <div class="bg-[#111] rounded-xl overflow-hidden relative">
+          <video autoplay muted loop playsinline class="w-full h-full object-cover">
+    <source src="assests/Video-950.mp4" type="video/mp4">
   </video>
-  <div style="position:absolute;bottom:12px;left:12px;color:#fff;font-size:12px;font-weight:600;text-shadow:0 2px 4px rgba(0,0,0,0.8);">
+          <div class="absolute bottom-3 left-3 text-white text-[12px] font-semibold drop-shadow-md">
     Festival Recap — 2025 Tour
   </div>
 </div>
-
-        
   
         <!-- Bottom Right -->
-        <div style="background:#fff;border-radius:12px;overflow:hidden;position:relative;">
-          <video autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;">
-            <source src="Video-624.mp4" type="video/mp4">
+        <div class="bg-white rounded-xl overflow-hidden relative">
+          <video autoplay muted loop playsinline class="w-full h-full object-cover">
+            <source src="assests/Video-624.mp4" type="video/mp4">
           </video>
-          <div style="position:absolute;bottom:50%;left:50%;transform:translate(-50%, 50%);background:rgba(255,255,255,0.95);backdrop-filter:blur(10px);padding:14px 20px;border-radius:10px;text-align:center;font-size:12px;font-weight:700;color:#000;letter-spacing:1px;">
-            Skate × Culture
-            <div style="font-size:9px;font-weight:500;margin-top:4px;letter-spacing:0.5px;opacity:0.7;">Collab Drop</div>
+          <div class="absolute inset-0 flex flex-col justify-center items-center text-center bg-white/90 backdrop-blur-sm rounded-xl px-4">
+            <span class="text-black text-[12px] font-bold tracking-wide">Skate × Culture</span>
+            <span class="text-black text-[9px] font-medium mt-1 opacity-70 tracking-tight">Collab Drop</span>
           </div>
         </div>
   
@@ -656,64 +874,57 @@ btn.addEventListener('click', () => {
     </div>
   </section>
   
+  
 
   <!-- EVENTS (dark, neon grid) -->
-  <section id="events" class="block dark" data-theme="dark" style="padding:100px 0;">
-    <div class="container">
+<!-- EVENTS SECTION -->
+<section id="events" class="block dark bg-black text-white py-24">
+  <div class="container mx-auto px-4">
+
       <!-- Heading -->
-      <h3 class="big-title reveal" style="color:var(--accent);margin-bottom:16px;">
+    <h3 class="big-title text-3xl md:text-4xl font-extrabold mb-4 text-red-500 reveal">
         Events
       </h3>
-      <p class="muted reveal" style="max-width:600px;margin-bottom:40px;">
+    <p class="muted max-w-xl mb-10 text-gray-300 reveal text-base md:text-lg">
         Nightlife, performances, private & public events — captured with editorial flair 
         and documentary-style storytelling.
       </p>
   
       <!-- Grid -->
-      <div class="event-grid" 
-           style="display:grid;grid-template-columns:repeat(2,1fr);gap:28px;">
-        
-        <!-- Card Template -->
-        <div class="event-card reveal" 
-             style="position:relative;border-radius:16px;overflow:hidden;
-                    background:url('https://images.unsplash.com/photo-1679746556827-a4722297a613?q=80&w=1170&auto=format&fit=crop') center/cover no-repeat;
-                    min-height:360px;cursor:pointer;transition:transform 0.4s ease;">
-          <div class="event-overlay" 
-               style="position:absolute;inset:0;background:rgba(0,0,0,0.35);transition:background 0.3s;"></div>
-          <div class="event-tag" 
-               style="position:absolute;bottom:20px;left:20px;background:rgba(0,0,0,0.7);
-                      color:#fff;padding:10px 16px;font-size:13px;font-weight:600;
-                      border-radius:20px;letter-spacing:0.5px;">
+    <div class="event-grid grid grid-cols-1 sm:grid-cols-2 gap-7">
+      
+      <!-- Card 1 -->
+      <div class="event-card relative rounded-2xl overflow-hidden cursor-pointer transform transition hover:scale-105 min-h-[360px] bg-center bg-cover" 
+           style="background-image:url('https://images.unsplash.com/photo-1679746556827-a4722297a613?q=80&w=1170&auto=format&fit=crop');">
+        <div class="absolute inset-0 bg-black/30 transition"></div>
+        <div class="event-tag absolute bottom-5 left-5 bg-black/70 text-white px-4 py-2 rounded-full text-sm font-semibold tracking-wide">
             MIMI LOUNGE
           </div>
         </div>
   
-        <div class="event-card reveal" 
-             style="position:relative;border-radius:16px;overflow:hidden;
-                    background:url('https://cdn.pixabay.com/photo/2014/04/05/11/39/concert-316464_1280.jpg') center/cover no-repeat;
-                    min-height:360px;cursor:pointer;transition:transform 0.4s ease;">
-          <div class="event-overlay" style="position:absolute;inset:0;background:rgba(0,0,0,0.35);"></div>
-          <div class="event-tag" style="position:absolute;bottom:20px;left:20px;background:rgba(0,0,0,0.7);color:#fff;padding:10px 16px;font-size:13px;font-weight:600;border-radius:20px;letter-spacing:0.5px;">
+      <!-- Card 2 -->
+      <div class="event-card relative rounded-2xl overflow-hidden cursor-pointer transform transition hover:scale-105 min-h-[360px] bg-center bg-cover" 
+           style="background-image:url('https://cdn.pixabay.com/photo/2014/04/05/11/39/concert-316464_1280.jpg');">
+        <div class="absolute inset-0 bg-black/30"></div>
+        <div class="event-tag absolute bottom-5 left-5 bg-black/70 text-white px-4 py-2 rounded-full text-sm font-semibold tracking-wide">
             LIVE
           </div>
         </div>
   
-        <div class="event-card reveal" 
-             style="position:relative;border-radius:16px;overflow:hidden;
-                    background:url('https://cdn.pixabay.com/photo/2021/11/13/15/02/india-6791558_1280.jpg') center/cover no-repeat;
-                    min-height:360px;cursor:pointer;transition:transform 0.4s ease;">
-          <div class="event-overlay" style="position:absolute;inset:0;background:rgba(0,0,0,0.35);"></div>
-          <div class="event-tag" style="position:absolute;bottom:20px;left:20px;background:rgba(0,0,0,0.7);color:#fff;padding:10px 16px;font-size:13px;font-weight:600;border-radius:20px;letter-spacing:0.5px;">
+      <!-- Card 3 -->
+      <div class="event-card relative rounded-2xl overflow-hidden cursor-pointer transform transition hover:scale-105 min-h-[360px] bg-center bg-cover" 
+           style="background-image:url('https://cdn.pixabay.com/photo/2021/11/13/15/02/india-6791558_1280.jpg');">
+        <div class="absolute inset-0 bg-black/30"></div>
+        <div class="event-tag absolute bottom-5 left-5 bg-black/70 text-white px-4 py-2 rounded-full text-sm font-semibold tracking-wide">
             STAGE
           </div>
         </div>
   
-        <div class="event-card reveal" 
-             style="position:relative;border-radius:16px;overflow:hidden;
-                    background:url('https://cdn.pixabay.com/photo/2016/11/23/15/48/audience-1853662_1280.jpg') center/cover no-repeat;
-                    min-height:360px;cursor:pointer;transition:transform 0.4s ease;">
-          <div class="event-overlay" style="position:absolute;inset:0;background:rgba(0,0,0,0.35);"></div>
-          <div class="event-tag" style="position:absolute;bottom:20px;left:20px;background:rgba(0,0,0,0.7);color:#fff;padding:10px 16px;font-size:13px;font-weight:600;border-radius:20px;letter-spacing:0.5px;">
+      <!-- Card 4 -->
+      <div class="event-card relative rounded-2xl overflow-hidden cursor-pointer transform transition hover:scale-105 min-h-[360px] bg-center bg-cover" 
+           style="background-image:url('https://cdn.pixabay.com/photo/2016/11/23/15/48/audience-1853662_1280.jpg');">
+        <div class="absolute inset-0 bg-black/30"></div>
+        <div class="event-tag absolute bottom-5 left-5 bg-black/70 text-white px-4 py-2 rounded-full text-sm font-semibold tracking-wide">
             DJ • NIGHT
           </div>
         </div>
@@ -722,128 +933,120 @@ btn.addEventListener('click', () => {
     </div>
   </section>
   
-  
+<!-- SELECTED GALLERY -->
+<section class="block light py-24">
+  <div class="container mx-auto px-4">
+    <h3 class="big-title text-3xl md:text-4xl font-extrabold mb-6 reveal">Selected</h3>
 
-  <!-- MORE GALLERY (light) -->
-  <section class="block light">
-    <div class="container">
-      <h3 class="big-title reveal">Selected</h3>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px">
-        <div class="reveal" style="height:220px;border-radius:10px;background-image:url('https://images.unsplash.com/photo-1590486803833-1c5dc8ddd4c8?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');background-size:cover"></div>
-        <div class="reveal" style="height:220px;border-radius:10px;background-image:url('https://images.unsplash.com/photo-1678798694643-2b8fddcf900f?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');background-size:cover"></div>
-        <div class="reveal" style="height:220px;border-radius:10px;background-image:url('https://images.unsplash.com/photo-1598006640672-f0cc33c40702?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');background-size:cover"></div>
-      </div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px">
-        <div class="reveal" style="height:220px;border-radius:10px;background-image:url('https://images.pexels.com/photos/2484848/pexels-photo-2484848.jpeg');background-size:cover"></div>
-        <div class="reveal" style="height:220px;border-radius:10px;background-image:url('https://images.pexels.com/photos/11566655/pexels-photo-11566655.jpeg');background-size:cover"></div>
-        <div class="reveal" style="height:220px;border-radius:10px;background-image:url('https://images.pexels.com/photos/20788953/pexels-photo-20788953.jpeg');background-size:cover"></div>
+    <!-- First Row -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-4">
+      <div class="reveal h-56 rounded-lg bg-cover bg-center" style="background-image:url('https://images.unsplash.com/photo-1590486803833-1c5dc8ddd4c8?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0');"></div>
+      <div class="reveal h-56 rounded-lg bg-cover bg-center" style="background-image:url('https://images.unsplash.com/photo-1678798694643-2b8fddcf900f?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0');"></div>
+      <div class="reveal h-56 rounded-lg bg-cover bg-center" style="background-image:url('https://images.unsplash.com/photo-1598006640672-f0cc33c40702?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0');"></div>
+    </div>
+
+    <!-- Second Row -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      <div class="reveal h-56 rounded-lg bg-cover bg-center" style="background-image:url('https://images.pexels.com/photos/2484848/pexels-photo-2484848.jpeg');"></div>
+      <div class="reveal h-56 rounded-lg bg-cover bg-center" style="background-image:url('https://images.pexels.com/photos/11566655/pexels-photo-11566655.jpeg');"></div>
+      <div class="reveal h-56 rounded-lg bg-cover bg-center" style="background-image:url('https://images.pexels.com/photos/20788953/pexels-photo-20788953.jpeg');"></div>
       </div>
     </div>
   </section>
 
+
   <!-- CONTACT -->
-  <footer id="contact" class="block light">
-    <div class="container contact-row">
-      <div class="contact-left reveal">
-        <h3>Let's create</h3>
-        <p class="muted">Commissions • Commercials • Events • Collaborations</p>
+  <footer id="contact" class="bg-black text-white py-12 px-6">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center md:items-end justify-between gap-8 border-b border-gray-700 pb-8">
+      <!-- Left -->
+      <div class="text-center md:text-left reveal">
+        <h3 class="text-3xl md:text-4xl font-bold tracking-tight mb-2" style="color:var(--accent)">Let's create</h3>
+        <p class="text-gray-400 text-sm md:text-base">Commissions • Commercials • Events • Collaborations</p>
       </div>
-      <div class="contact-links reveal">
-        <a class="cta" href="mailto:hello@lensbros.example">hello@lensbros.example</a>
-        <a class="ghost" href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>
+  
+      <!-- Right -->
+      <div class="flex flex-col md:items-end items-center gap-3 reveal">
+        <a 
+          href="mailto:hello@lensbros.example" 
+          class="text-lg font-medium hover:text-[var(--accent)] transition-colors duration-300"
+        >
+          hello@lensbros.example
+        </a>
+        <a 
+          href="https://instagram.com" 
+          target="_blank" 
+          rel="noopener" 
+          class="text-sm text-gray-400 hover:text-[var(--accent)] transition-colors duration-300"
+        >
+          Instagram
+        </a>
       </div>
     </div>
-
-    <div style="text-align:center;margin-top:36px;color:var(--muted)">© <span id="year"></span> LensBros — All rights reserved</div>
+  
+    <div class="text-center mt-8 text-gray-500 text-sm">
+      © <span id="year"></span> LensBros — All rights reserved
+    </div>
   </footer>
+  
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+  
 
   <!-- ========== SCRIPTS ========== -->
   <script>
   /* Wait for libs to load & DOM to be ready */
   window.addEventListener('load', function () {
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const hasGSAP = (typeof gsap !== 'undefined');
     // set year
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // GSAP & ScrollTrigger
-    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
-      console.warn('GSAP or ScrollTrigger not loaded. Animations disabled.');
-      return;
+    // Basic reveals using IntersectionObserver (robust on mobile)
+    const revealEls = document.querySelectorAll('.reveal');
+    if (revealEls.length) {
+      const revealObs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('reveal-visible');
+            revealObs.unobserve(entry.target);
+          }
+        });
+      }, { rootMargin: '0px 0px -10% 0px', threshold: 0.15 });
+      revealEls.forEach(el => revealObs.observe(el));
+      if (prefersReduced) revealEls.forEach(el => el.classList.add('reveal-visible'));
     }
-    gsap.registerPlugin(ScrollTrigger);
 
-    // Basic reveals for elements with class .reveal
-    gsap.utils.toArray('.reveal').forEach((el, idx) => {
-      gsap.fromTo(el, { y: 26, opacity: 0 }, {
-        y: 0, opacity: 1, duration: 0.9, ease: 'power3.out', delay: idx * 0.03,
-        scrollTrigger: { trigger: el, start: 'top 92%', toggleActions: 'play none none none' }
-      });
-    });
-
-    // Smooth body background/theme switch based on section data-theme
+    // Smooth body background/theme switch via IntersectionObserver
     const sections = document.querySelectorAll('section.block, header#hero');
-    sections.forEach(section => {
+    if (sections.length) {
+      const themeObs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          const section = entry.target;
       const theme = section.dataset.theme || (section.id === 'hero' ? 'dark' : (section.classList.contains('dark') ? 'dark' : 'light'));
-      ScrollTrigger.create({
-        trigger: section,
-        start: 'top center',
-        end: 'bottom center',
-        onEnter: () => { gsap.to(document.body, { backgroundColor: theme === 'dark' ? '#020203' : '#f6efe6', color: theme === 'dark' ? '#fff' : '#111', duration: 0.6 }); },
-        onEnterBack: () => { gsap.to(document.body, { backgroundColor: theme === 'dark' ? '#020203' : '#f6efe6', color: theme === 'dark' ? '#fff' : '#111', duration: 0.6 }); }
-      });
-    });
+          const bg = theme === 'dark' ? '#020203' : '#f6efe6';
+          const color = theme === 'dark' ? '#fff' : '#111';
+          if (hasGSAP && !prefersReduced) {
+            gsap.to(document.body, { backgroundColor: bg, color, duration: 0.6, overwrite: true });
+          } else {
+            document.body.style.backgroundColor = bg;
+            document.body.style.color = color;
+          }
+        });
+      }, { threshold: 0.5 });
+      sections.forEach(s => themeObs.observe(s));
+    }
 
-    // Hero title subtle letter animation using anime.js for bounce
+    // Hero title subtle letter animation (optional with GSAP)
     const heroTitle = document.querySelector('.hero-title');
     if (heroTitle) {
-      // split letters
       heroTitle.innerHTML = heroTitle.textContent.split('').map(ch => `<span style="display:inline-block">${ch === ' ' ? '&nbsp;' : ch}</span>`).join('');
       const letters = heroTitle.querySelectorAll('span');
+      if (hasGSAP && !prefersReduced) {
       gsap.from(letters, { y: 60, opacity: 0, stagger: 0.02, duration: 1.1, ease: 'expo.out' });
-      // subtle loop scale
       gsap.to(heroTitle, { scale: 1.02, duration: 6, ease: 'sine.inOut', repeat: -1, yoyo: true });
     }
-
-    // Pin photo showcase (left large image pinned while right tiles scroll)
-    const leftPin = document.getElementById('photoPinLeft');
-    if (leftPin) {
-      ScrollTrigger.create({
-        trigger: leftPin,
-        start: 'top top+=80',
-        end: () => "+=" + (window.innerHeight * 1.1),
-        pin: leftPin,
-        pinSpacing: true,
-        scrub: 0.6
-      });
-
-      // parallax background movement
-      const bg = leftPin.querySelector('.bg');
-      gsap.to(bg, { yPercent: 18, scale: 1.07, ease: 'none', scrollTrigger: { trigger: leftPin, start: 'top top', end: () => "+=" + (window.innerHeight * 1.1), scrub: 0.8 }});
-    }
-
-    // Portraits: sticky media while text scrolls
-    const portraitsMedia = document.getElementById('portraitsMedia');
-    if (portraitsMedia) {
-      ScrollTrigger.create({
-        trigger: portraitsMedia,
-        start: 'top center',
-        end: 'bottom top',
-        pin: portraitsMedia,
-        pinSpacing: false,
-        scrub: true
-      });
-    }
-
-    // Video hero: pin for cinematic moment
-    const videoHero = document.getElementById('videoHero');
-    if (videoHero) {
-      ScrollTrigger.create({
-        trigger: videoHero,
-        start: 'top center',
-        end: '+=600',
-        pin: videoHero,
-        pinSpacing: false,
-        scrub: 0.6
-      });
     }
 
     // Play/pause videos as they enter/leave viewport (IntersectionObserver)
@@ -864,7 +1067,7 @@ btn.addEventListener('click', () => {
 
     vids.forEach(v => { try { obs.observe(v); } catch(e) {} });
 
-    // Before using the "highlighter reading" effect: animate marker element width on scroll
+    // Highlight reading effect via IntersectionObserver + CSS transition
     const highlightWrap = document.querySelector('.highlight-wrap');
     if (highlightWrap) {
       const marker = highlightWrap.querySelector('.marker');
@@ -879,45 +1082,64 @@ btn.addEventListener('click', () => {
       }
       updateMarkerHeight();
       window.addEventListener('resize', updateMarkerHeight);
-
-      ScrollTrigger.create({
-        trigger: highlightWrap,
-        start: 'top 80%',
-        onEnter: () => {
-          gsap.fromTo(marker, { width: '0%' }, { width: '100%', duration: 1.15, ease: 'power2.inOut' });
-          gsap.to(text, { color: '#111', duration: 0.6, delay: 0.15 });
-        },
-        onEnterBack: () => {
-          gsap.fromTo(marker, { width: '0%' }, { width: '100%', duration: 1.15, ease: 'power2.inOut' });
-        }
-      });
+      marker.style.transition = 'width 1.15s ease';
+      const markerObs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            marker.style.width = '100%';
+            markerObs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.5 });
+      markerObs.observe(highlightWrap);
     }
 
-    // Reveal tiles with stagger into view when their container is visible
-    gsap.utils.toArray('.pin-right .tile').forEach((tile, i) => {
-      gsap.fromTo(tile, { y: 40, opacity: 0 }, {
-        y: 0, opacity: 1, duration: 0.85, ease: 'power3.out',
-        scrollTrigger: { trigger: tile, start: 'top 92%', toggleActions: 'play none none none' }, delay: i * 0.06
-      });
-    });
-
-    // Small floating hero blob animation
+    // Optional: small floating hero blob animation if GSAP present
+    if (hasGSAP && !prefersReduced) {
     gsap.to('.hero-blob', { x: -40, y: -20, duration: 12, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+    }
 
     // small interactive nav smooth scrolling
-    document.querySelectorAll('.nav-links a').forEach(a => {
+    // Smooth scroll for all in-page anchors
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
       a.addEventListener('click', (e) => {
-        e.preventDefault();
-        const id = a.getAttribute('href');
-        const target = document.querySelector(id);
+        const href = a.getAttribute('href');
+        if (!href || href.length < 2) return;
+        const target = document.querySelector(href);
         if (!target) return;
+        e.preventDefault();
         const y = target.getBoundingClientRect().top + window.pageYOffset - 80;
         window.scrollTo({ top: y, behavior: 'smooth' });
       });
     });
 
+    // Mobile bottom nav: active indicator based on scroll
+    const sectionsForActive = ['#hero', '#about', '#work', '#contact'];
+    const anchors = sectionsForActive.map(id => ({ id, el: document.querySelector(`nav.md\\:hidden a[href="${id}"]`) })).filter(x => x.el);
+    if (anchors.length) {
+      const activeObs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          const id = `#${entry.target.id}`;
+          const a = anchors.find(x => x.id === id)?.el;
+          if (!a) return;
+          const indicator = a.querySelector('span[style*="background:"]');
+          if (entry.isIntersecting && entry.intersectionRatio > 0.55) {
+            a.classList.add('text-white');
+            if (indicator) indicator.style.opacity = '1';
+          } else {
+            a.classList.remove('text-white');
+            if (indicator) indicator.style.opacity = '0';
+          }
+        });
+      }, { threshold: [0.25, 0.55, 0.75] });
+      sectionsForActive.forEach(id => {
+        const el = document.querySelector(id);
+        if (el) activeObs.observe(el);
+      });
+    }
+
     // tiny anime.js breathe for portraits image
-    if (typeof anime !== 'undefined') {
+    if (typeof anime !== 'undefined' && !prefersReduced) {
       anime({
         targets: '#portraitsMedia img',
         scale: [1, 1.02],
@@ -929,11 +1151,10 @@ btn.addEventListener('click', () => {
     }
 
     // small accessibility hint: ensure videos muted to allow autoplay on mobile, you can remove muted later
-    document.querySelectorAll('video').forEach(v => { v.muted = true; });
+    document.querySelectorAll('video').forEach(v => { v.muted = true; v.setAttribute('preload','metadata'); });
 
   }); // window.load end
   </script>
 
 </body>
 </html>
-
